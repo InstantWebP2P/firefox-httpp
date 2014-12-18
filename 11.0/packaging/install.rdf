@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>httpp@iwebpp.com</em:id>
+    <em:version>0.0.1</em:version>
+    <em:unpack>true</em:unpack>
+    <em:type>2</em:type>
+
+    <em:targetApplication>
+      <!-- Firefox -->
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.5</em:minVersion>
+        <em:maxVersion>12.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- front-end metadata -->
+    <em:name>HTTPP Protocol</em:name>
+    <em:description>Allow HTTP over reliable UDP-transport</em:description>
+    <em:creator>iwebpp.com</em:creator>
+    <em:contributor>zs68j2ee@gmail.com</em:contributor>
+    <em:contributor>jaguar.xiong@gmail.com</em:contributor>
+    <em:homepageURL>http://www.iwebpp.com</em:homepageURL>
+  </Description>
+</RDF>

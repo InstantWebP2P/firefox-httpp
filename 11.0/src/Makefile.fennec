@@ -1,0 +1,80 @@
+MODULE		= httpp
+
+
+UDT_SRCS 	= \
+	$(UDT_PATH)/md5.cpp \
+	$(UDT_PATH)/common.cpp \
+	$(UDT_PATH)/window.cpp \
+	$(UDT_PATH)/list.cpp \
+	$(UDT_PATH)/buffer.cpp \
+	$(UDT_PATH)/packet.cpp \
+	$(UDT_PATH)/channel.cpp \
+	$(UDT_PATH)/queue.cpp \
+	$(UDT_PATH)/ccc.cpp \
+	$(UDT_PATH)/cache.cpp \
+	$(UDT_PATH)/core.cpp \
+	$(UDT_PATH)/epoll.cpp \
+	$(UDT_PATH)/api.cpp \
+	$(UDT_PATH)/udt_cwrapper.cpp \
+	$(NULL) 
+
+CXX	        = $(CROSS)g++
+CPPSRCS		= \
+	udt_pr.cpp \
+	udptransportModule.cpp \
+	udtSocketProvider.cpp \
+	udptHttppHandler.cpp \
+	udptProxyInfo.cpp \
+	$(NULL)
+
+CXXFLAGS += \
+	-fno-rtti -fPIC -fno-exceptions -fno-strict-aliasing \
+	-fomit-frame-pointer -std=gnu++0x -pipe \
+	$(NULL)
+
+UDT_INCLUDES = -I$(UDT_PATH) -DLINUX 
+
+ANDROID_INCLUDES = \
+	-I$(ANDROIDNDK)/platforms/android-$(ANDROIDVER)/arch-arm/usr/include/ \
+	-I$(ANDROIDNDK)/sources/cxx-stl/stlport/stlport/ \
+	-DOSTYPE=\"Linux\" -DOSARCH=Linux \
+	-DANDROID=1 -DANDROID_VERSION=$(ANDROIDVER) \
+	-mfpu=vfp -mfloat-abi=softfp -mandroid \
+	$(NULL)
+
+GECKO_INCLUDES = \
+	-I$(MOZSDKPATH)/../include/ \
+	-include $(MOZSDKPATH)/../include/"xpcom-config.h" \
+	-DXPCOM_GLUE=1 -DXPCOM_GLUE_USE_NSPR=1 \
+	-DXP_LINUX \
+	$(NULL)
+
+GECKO_LDFLAGS =  \
+	-L$(MOZSDKPATH)/lib/ \
+	-lxpcomglue \
+	$(NULL)
+
+ANDROID_LDFLAGS = \
+	--sysroot=$(ANDROIDNDK)/platforms/android-$(ANDROIDVER)/arch-arm/ \
+	-L$(ANDROIDNDK)/platforms/android-$(ANDROIDVER)/arch-arm/usr/lib/ \
+	-L$(ANDROIDNDK)/sources/cxx-stl/stlport/libs/armeabi-v7a/ \
+	$(NULL)
+
+%.o: %.cpp Makefile.fennec
+	$(CXX) -c $(CXXFLAGS) $(GECKO_INCLUDES) $(UDT_INCLUDES) $(ANDROID_INCLUDES) $<
+
+### build UDT .o first
+$(MODULE).so: $(CPPSRCS:%.cpp=%.o)
+	make -C $(UDT_PATH) -f Makefile.fennec all ANDROIDNDK=$(ANDROIDNDK) ANDROIDVER=$(ANDROIDVER) CROSS=$(CROSS)  
+	$(CXX) -shared -o $@ -Wl,-soname=$(MODULE).so $(CPPSRCS:%.cpp=%.o) $(UDT_SRCS:%.cpp=%.o) $(GECKO_LDFLAGS) $(ANDROID_LDFLAGS)
+	chmod +x $@
+
+all: build
+
+build: $(MODULE).so
+
+### clean UDT .o
+clean:
+	make -C $(UDT_PATH) -f Makefile.fennec clean 
+	rm -rf $(MODULE).so *.o $(UDT_PATH)/*.o
+

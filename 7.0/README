@@ -1,0 +1,10 @@
+Ubuntu:
+- dependencies firefox-dev
+  apt-get install firefox-dev
+  if ubuntu is natty, please add one line below to /etc/apt/source.list
+  deb http://security.ubuntu.com/ubuntu natty-security main 
+  then, sudo apt-get update, then sudo apt-get install firefox-dev.
+  
+- build steps:
+  make
+

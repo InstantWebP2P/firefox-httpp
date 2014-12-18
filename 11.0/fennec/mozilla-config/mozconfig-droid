@@ -1,0 +1,15 @@
+# Add the correct paths here:
+ac_add_options --with-android-ndk="/ISS/android/android-ndk-r5c"
+ac_add_options --with-android-sdk="/ISS/android/android-sdk-linux_x86/platforms/android-13"
+ac_add_options --with-android-version=5
+
+# android options
+ac_add_options --enable-application=mobile/android
+ac_add_options --target=arm-linux-androideabi
+ac_add_options --with-ccache
+ac_add_options --enable-tests
+#ac_add_options --disable-elf-hack
+
+mk_add_options MOZ_OBJDIR=./objdir-droid
+mk_add_options MOZ_MAKE_FLAGS="-j2 -s"
+

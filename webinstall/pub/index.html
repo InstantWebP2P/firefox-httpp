@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="application/javascript">
+<!--
+function install (aEvent)
+{
+  var params = {
+    "HTTPP": { URL: aEvent.target.href,
+             IconURL: aEvent.target.getAttribute("iconURL"),
+             Hash: aEvent.target.getAttribute("hash"),
+             toString: function () { return this.URL; }
+    }
+  };
+  InstallTrigger.install(params);
+
+  return false;
+}
+-->
+</script>
+
+<a href="httpp-fennec-10.0.2.xpi"
+  hash="sha1:8623f9ddc509f66922f61285108a8167e8bd49d9"
+  onclick="return install(event);">Install Extension!</a>
+
+</body>
+</html>
+
+

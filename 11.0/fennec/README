@@ -1,0 +1,4 @@
+To build HTTPP extension for Fennec:
+- setup Fennec build env, including android ndk/sdk and firefox-build dependency
+- build out Fennec first, then point out fennec SDK include and library path
+- type make with cross toolchain and monzilla/android path
